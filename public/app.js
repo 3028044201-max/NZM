@@ -1,4 +1,4 @@
-const API_BASE = '/api'; // Relative path for Worker
+const API_BASE = 'https://nzapi.3028044201.workers.dev
 // Placeholder for checkpoint area names (ID -> Name)
 const CHECKPOINT_AREAS = {
     "40014": "北欧森林",
