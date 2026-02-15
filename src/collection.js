@@ -15,7 +15,7 @@ function normalizeCookie(cookie) {
 function buildBody(method, param) {
     const params = {
         iChartId: '430662', iSubChartId: '430662', sIdeToken: 'NoOapI',
-        eas_url: 'http://wechatmini.qq.com/-/-/pages/handbook/handbook/',
+        eas_url: 'https://wechatmini.qq.com/-/-/pages/handbook/handbook/',
         method: method, from_source: '2',
         param: JSON.stringify(param),
     };
