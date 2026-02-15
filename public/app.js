@@ -9,7 +9,7 @@ let isWxQRPollingActive = false;
 let wxQrPollingInFlight = false;
 
 // 后端API地址（替换为你的Cloudflare Worker地址）
-const API_BASE = 'https://你的worker名称.你的域名.workers.dev';
+const API_BASE = 'https://nzapi.3028044201.workers.dev';
 
 // 初始化DOM元素
 function initDOM() {
