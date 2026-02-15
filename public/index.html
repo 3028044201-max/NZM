@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NZM 数据统计</title>
+    <link rel="stylesheet" href="style.css?v=5">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Umami Analytics -->
+    <script defer src="http://154.222.30.217:2345/script.js"
+        data-website-id="f4036759-b32e-4ebb-b0d8-3cbb1208fab3"></script>
+</head>
+
+<body>
+    <div id="bg-layer"></div>
+    <div id="app">
+        <!-- Login View -->
+        <div id="login-view" class="view">
+            <div class="login-container">
+                <div
+                    style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); padding: 1rem 1.5rem; border-radius: 12px; margin-bottom: 1.5rem; border: 2px solid #fca5a5; box-shadow: 0 4px 20px rgba(239, 68, 68, 0.4);">
+                    <p
+                        style="color: #fff; font-size: 1.3rem; font-weight: bold; margin: 0; text-align: center; text-shadow: 0 2px 4px rgba(0,0,0,0.3); line-height: 1.6;">
+                        让暴击哥给你养服去吧
+                    </p>
+                </div>
+
+                <div class="login-header">
+                    <img src="images/logo_gcd.png" class="login-logo" alt="Ghost Blows Light Logo">
+                    <h1>逆战：未来数据统计</h1>
+                </div>
+
+                <div
+                    style="background: rgba(220, 38, 38, 0.8); border: 1px solid #ef4444; border-radius: 8px; padding: 0.8rem; margin-bottom: 2rem; text-align: center; color: #fff; font-weight: bold; backdrop-filter: blur(4px);">
+                    日内瓦的
+                </div>
+
+                <div class="login-layout">
+                    <div class="card login-card" style="position: relative;">
+                        <!-- Security Warning Panel (Absolute Positioned) -->
+                        <div class="security-warning-card">
+                            <h3
+                                style="color: #ef4444; border-bottom: 1px solid rgba(239,68,68,0.3); padding-bottom: 0.5rem; margin-bottom: 1rem;">
+                                关于盗号问题
+                            </h3>
+                            <div style="font-size: 1.05rem; line-height: 1.8; color: #e5e7eb;">
+                                <p style="margin-bottom: 0.8rem;">
+                                    右边的工作原理你是不看的<br>
+                                    完全开源的说明你是不看的<br>
+                                    让你审查源码你是要装瞎的<br>
+                                    完事张嘴就是要盗号封号的
+                                </p>
+                                <p style="margin-bottom: 0.8rem;">
+                                    <span style="color: #ef4444; font-weight: bold;">等你老了我第一个找你推销保健品</span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <h2>账号绑定</h2>
+                        <p class="subtitle">扫描二维码登录，即可自动同步战绩数据</p>
+
+                        <!-- 登录方式切换 -->
+                        <div class="login-method-tabs"
+                            style="display:flex; gap:0; margin:1rem 0; border-radius:8px; overflow:hidden; border:1px solid #4b5563;">
+                            <button id="method-qq" class="login-method-btn active" onclick="switchLoginMethod('qq')"
+                                style="flex:1; padding:0.6rem; background:#8b5cf6; color:#fff; border:none; cursor:pointer; font-size:0.9rem; font-weight:bold; transition:background 0.2s;">
+                                QQ扫码登录
+                            </button>
+                            <button id="method-wechat" class="login-method-btn" onclick="switchLoginMethod('wechat')"
+                                style="flex:1; padding:0.6rem; background:#1f2937; color:#9ca3af; border:none; cursor:pointer; font-size:0.9rem; font-weight:bold; transition:background 0.2s;">
+                                微信区登录</ button>
+                        </div>
+
+                        <!-- Web QR Login -->
+                        <div id="qr-login-container" style="margin-top:1rem; text-align:center;">
+                            <div id="qr-wrapper"
+                                style="position:relative; display:inline-block; width:150px; height:150px;">
+                                <img id="qr-img" src=""
+                                    style="width:100%; height:100%; border-radius:8px; display:none;">
+                                <div id="qr-loading"
+                                    style="position:absolute; top:0; left:0; width:100%; height:100%; display:flex; align-items:center; justify-content:center; background:#f0f0f0; border-radius:8px; color:#333;">
+                                    正在获取...
+                                </div>
+                                <div id="qr-overlay"
+                                    style="position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(255,255,255,0.9); display:none; flex-direction:column; align-items:center; justify-content:center; cursor:pointer;">
+                                    <span style="color:#000; font-weight:bold; margin-bottom:5px;">已失效</span>
+                                    <span style="color:#10b981; font-size:0.9rem;">点击刷新</span>
+                                </div>
+                            </div>
+                            <p id="qr-status" style="font-size:0.9rem; color:#aaa; margin-top:1rem;">请使用 手机QQ 扫码登录</p>
+
+                            <!-- 扫码异常提示 -->
+                            <div class="qr-tips"
+                                style="margin-top:1.2rem; padding:0.8rem; background:rgba(255,255,255,0.05); border-radius:8px; text-align:left; font-size:0.85rem; line-height:1.6; color:#94a3b8;">
+                                <p style="margin:0 0 0.5rem 0; color:#f59e0b; font-weight:bold;">扫码出现设备网络异常？</p>
+                                <ol style="margin:0; padding-left:1.2rem;">
+                                    <li>优先尝试<strong style="color:#10b981;">多次刷新网页</strong>后重新扫码</li>
+                                    <li>将手机 WiFi 关闭，<strong style="color:#10b981;">使用流量</strong>扫码登录</li>
+                                    <li>若仍无法解决，可点击右下角<strong style="color:#60a5fa;">「开源仓库」</strong>获取源码本地部署</li>
+                                    <li>或点击下方按钮加入 <strong style="color:#8b5cf6;">Oopz 频道</strong> 获取一键部署的本地包：</li>
+                                </ol>
+                                <!-- Oopz Channel Button -->
+                                <div style="margin-top:8px;">
+                                    <a href="https://oopz.cn/i/snhcix" target="_blank" class="qq-group-btn"
+                                        style="display:inline-block; background:#8b5cf6; padding:0.6rem 1.2rem; font-size:0.9rem; color:#fff; text-decoration:none; border-radius:6px; font-weight:bold;">
+                                        点击加入 Oopz 频道
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 微信扫码登录 -->
+                        <div id="wechat-login-container" style="display:none; margin-top:1rem; text-align:center;">
+                            <div id="wx-qr-wrapper"
+                                style="position:relative; display:inline-block; width:200px; height:200px;">
+                                <img id="wx-qr-img" src=""
+                                    style="width:100%; height:100%; border-radius:8px; display:none;">
+                                <div id="wx-qr-loading"
+                                    style="position:absolute; top:0; left:0; width:100%; height:100%; display:flex; align-items:center; justify-content:center; background:#f0f0f0; border-radius:8px; color:#333;">
+                                    正在获取...
+                                </div>
+                                <div id="wx-qr-overlay"
+                                    style="position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(255,255,255,0.9); display:none; flex-direction:column; align-items:center; justify-content:center; cursor:pointer;"
+                                    onclick="startWxQRLogin()">
+                                    <span style="color:#000; font-weight:bold; margin-bottom:5px;">已失效</span>
+                                    <span style="color:#10b981; font-size:0.9rem;">点击刷新</span>
+                                </div>
+                            </div>
+                            <p id="wx-qr-status" style="font-size:0.9rem; color:#aaa; margin-top:1rem;">请使用微信扫码登录</p>
+                            <p style="font-size:0.85rem; color:#10b981; margin-top:0.5rem;">💚 感谢五群大佬实现微信区数据统计</p>
+                        </div>
+                    </div>
+
+                    <!-- Info Panel -->
+                    <div class="info-card-transparent">
+                        <h3>关于本工具</h3>
+                        <ul>
+                            <li>
+                                <strong>工作原理</strong>
+                                <p><strong>QQ区：</strong>通过 QQ 空间扫码登录获取临时的 Cookie，用于请求《逆战：未来工具箱》小程序接口拉取战绩。</p>
+                                <p><strong>微信区：</strong>利用官方活动页微信登录接口，通过 Milo SDK 转换获得游戏账号 Cookie，实现微信区数据查询。</p>
+                            </li>
+                            <li>
+                                <strong>隐私安全</strong>
+                                <p>所有敏感数据（Cookie）仅保存在您本地浏览器的缓存中。服务器仅作流量转发，不保存任何数据。</p>
+                            </li>
+                            <li>
+                                <strong>开源透明</strong>
+                                <p>本项目已完全开源。如果您对数据安全有顾虑，可点击右下角按钮前往 GitHub 仓库，下载源码在本地运行。</p>
+                            </li>
+                            <li>
+                                <strong>异地提醒</strong>
+                                <p>本项目部署于 Cloudflare 全球边缘网络，登录时 QQ 安全中心可能会提示境外登录，这属于正常现象。</p>
+                            </li>
+                            <li>
+                                <strong>暂无数据？</strong>
+                                <p style="color: #f59e0b;">登录后若无数据，请先前往手机QQ搜索“逆战未来工具箱”小程序，同意协议后再点击本页刷新按钮。</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats View -->
+        <div id="stats-view" class="view hidden">
+            <header class="navbar">
+                <div class="brand">逆战：未来数据统计</div>
+                <div class="nav-center-group">
+                    <img src="images/logo_gcd.png" class="nav-season-logo" alt="Season Logo">
+                    <div class="nav-tabs">
+                        <button class="nav-tab active" data-tab="stats">战绩</button>
+                        <button class="nav-tab" data-tab="collection">图鉴</button>
+                    </div>
+                </div>
+                <div class="actions">
+                    <span id="user-info"></span>
+                    <button id="refresh-btn">刷新状态</button>
+                    <button id="logout-btn">解除同步</button>
+                </div>
+            </header>
+
+            <main class="container">
+                <div id="loading" class="loading-spinner hidden">
+                    <div class="spinner"></div>
+                    <p>正在同步数据...</p>
+                </div>
+
+                <div id="error-msg" class="error-banner hidden"></div>
+
+                <!-- Stats Tab Content -->
+                <div id="stats-tab" class="stats-layout">
+
+                    <!-- Stats Main Content -->
+                    <div class="stats-main">
+                        <div id="stats-content" class="hidden">
+                            <div class="info-banner" style="font-size:1.1rem; line-height:1.8;">
+                                <p style="margin:0;">⚠️ 数据说明：官方数据为历史总计（不含机甲）。详细分析基于<b>最近 30 天 / 100 场</b>游戏记录。</p>
+                                <p style="color: #f59e0b; margin-top: 8px;">💡
+                                    暂无数据？请先前往手机QQ搜索"逆战未来工具箱"小程序，同意协议后再点击本页刷新按钮。</p>
+                                <p style="color: #94a3b8; margin-top: 8px;">🔄
+                                    数据消失了？可能是Cookie过期，请点击右上角<b>「解除同步」</b>后重新扫码同步即可。</p>
+                            </div>
+
+                            <!-- Oopz Channel Card -->
+                            <div class="qq-group-card">
+                                <div class="qq-group-icon">💬</div>
+                                <div class="qq-group-info">
+                                    <div class="qq-group-title">逆战未来摸鱼频道</div>
+                                    <div class="qq-group-desc">QQ群已满，请移步Oopz频道吹水组队~</div>
+                                </div>
+                                <div class="qq-group-action">
+                                    <a href="https://oopz.cn/i/snhcix" target="_blank"
+                                        style="background:#8b5cf6; padding:0.6rem 1.2rem; font-size:0.9rem; color:#fff; text-decoration:none; border-radius:6px; font-weight:bold;">
+                                        加入 Oopz 频道
+                                    </a>
+                                </div>
+                            </div>
+
+                            <!-- Sponsor List Card -->
+                            <div class="qq-group-card"
+                                style="background:linear-gradient(135deg, rgba(255,105,180,0.2), rgba(255,182,193,0.15)); border:1px solid rgba(255,105,180,0.5);">
+                                <div class="qq-group-icon" style="background:transparent; font-size:2rem;">🌸</div>
+                                <div class="qq-group-info" style="flex:1;">
+                                    <div class="qq-group-title" style="color:#ff69b4;">赞助者名单 <span
+                                            style="font-size:0.75rem; color:#ffb6c1; font-weight:normal;">（排序不分先后）</span>
+                                    </div>
+                                    <div class="qq-group-desc"
+                                        style="color:#ffb6c1; font-size:0.95rem; line-height:1.8; margin-top:6px;">
+                                        感谢以下大佬的支持：<br>
+                                        <span
+                                            style="color:#ffd700;">一***橙子🍊，匿名大佬，李**cc，再*吧，sn0***1ne25，得*沃，A**u，可爱小***oro，盛，夹*酱，包*头，*鹊，CT**付，重***城，匿名大佬，Ci**ue，*~，Z，Un***tr，后***海，^_^，匿名大佬，雾*酱，罗*花，不关**的事，*白，怯，Fl***ed，向着***发，*丁，自*琦，：，李，*心，天*了，當***雞，do***73，匿名大佬，*风，*恋，碌**为</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Official Stats Section -->
+                            <h2 class="section-title" style="margin-top: 0;">官方历史数据 <small
+                                    style="font-size:0.6em;color:#bbb;font-weight:normal">（不包含机甲/PVP）</small></h2>
+                            <section class="summary-section official-stats">
+                                <div class="stat-card summary-card">
+                                    <h3>历史总场次</h3>
+                                    <div class="value" id="off-total-games">-</div>
+                                </div>
+                                <div class="stat-card summary-card">
+                                    <h3>历史总时长</h3>
+                                    <div class="value" id="off-total-time">-</div>
+                                </div>
+                            </section>
+
+                            <!-- Recent Stats Section -->
+                            <h2 class="section-title">近期战绩统计 <small
+                                    style="font-size:0.6em;color:#bbb;font-weight:normal">（最近30天/100场）</small></h2>
+                            <section class="summary-section recent-stats">
+                                <div class="stat-card summary-card">
+                                    <h3>近期场次</h3>
+                                    <div class="value" id="recent-games">-</div>
+                                </div>
+                                <div class="stat-card summary-card">
+                                    <h3>近期胜率</h3>
+                                    <div class="value" id="recent-win-rate">-</div>
+                                </div>
+                                <div class="stat-card summary-card">
+                                    <h3>场均伤害</h3>
+                                    <div class="value" id="recent-avg-damage">-</div>
+                                </div>
+                            </section>
+
+                            <!-- Modes Section -->
+                            <section>
+                                <h2 class="section-title">模式统计</h2>
+                                <div id="mode-stats" class="grid-container">
+                                    <!-- JS Generated -->
+                                </div>
+                            </section>
+
+                            <!-- Maps Section -->
+                            <section>
+                                <div class="section-header">
+                                    <h2 class="section-title">地图详情 <small
+                                            style="font-size:0.6em;color:#bbb;font-weight:normal">（近30天/100场场次分布）</small>
+                                    </h2>
+                                </div>
+                                <div id="map-stats" class="grid-container map-grid">
+                                    <!-- JS Generated -->
+                                </div>
+                            </section>
+
+                            <!-- Match History Section -->
+                            <section>
+                                <h2 class="section-title">对局记录</h2>
+                                <div class="mode-tabs">
+                                    <button class="mode-tab active" data-mode="all">全部</button>
+                                    <button class="mode-tab" data-mode="僵尸猎场">猎场</button>
+                                    <button class="mode-tab" data-mode="塔防战">塔防</button>
+                                    <button class="mode-tab" data-mode="时空追猎">追猎</button>
+                                </div>
+                                <div id="match-history" class="match-list">
+                                    <!-- JS Generated -->
+                                </div>
+                                <div class="pagination">
+                                    <button id="prev-page" disabled>&lt; 上一页</button>
+                                    <span id="page-info">第 1 页</span>
+                                    <button id="next-page" disabled>下一页 &gt;</button>
+                                </div>
+                            </section>
+
+                            <!-- Donate Card Section -->
+                            <section class="donate-section">
+                                <div class="donate-card">
+                                    <h2 class="donate-title">支持作者</h2>
+                                    <img src="images/donate-wechat.png" alt="微信赞赏码" class="donate-qr-large">
+                                    <p class="donate-text">维护不易，若有帮助到你，可以在条件允许的情况下请作者喝杯咖啡~ 我会在官方小程序优化前一直维护哒~</p>
+                                </div>
+                            </section>
+                        </div>
+                    </div><!-- /.stats-main -->
+
+                    <!-- Fragment Progress Sidebar -->
+                    <aside id="progress-sidebar" class="progress-sidebar">
+                        <div class="sidebar-header" id="sidebar-drag-handle">
+                            <h3>碎片进度</h3>
+                            <button id="sidebar-toggle" class="sidebar-toggle-btn" title="缩小为浮动球">
+                                <span class="toggle-icon-minimize"></span>
+                            </button>
+                        </div>
+                        <div id="fragment-list" class="sidebar-content">
+                            <p style="color:#888;font-size:0.9rem;">加载中...</p>
+                        </div>
+                    </aside>
+
+                    <!-- Donate Floating Sidebar (PC Only) -->
+                    <aside id="donate-sidebar" class="donate-sidebar">
+                        <div class="sidebar-header" id="donate-drag-handle">
+                            <h3>支持作者 <span class="sidebar-hint">点击右上角可隐藏</span></h3>
+                            <button id="donate-toggle" class="sidebar-toggle-btn" title="缩小为浮动球">
+                                <span class="toggle-icon-minimize"></span>
+                            </button>
+                        </div>
+                        <div class="sidebar-content donate-content">
+                            <img src="images/donate-wechat.png" alt="微信赞赏码" class="donate-qr">
+                            <p class="donate-desc">维护不易，若有帮助到你，可以在条件允许的情况下请作者喝杯咖啡，我会在官方小程序优化前一直维护哒~</p>
+                        </div>
+                    </aside>
+                </div><!-- /.stats-layout -->
+
+                <!-- Collection Tab Content -->
+                <div id="collection-tab" class="hidden">
+                    <div class="collection-header">
+                        <h2 class="section-title">武器图鉴 <span id="weapon-count"
+                                style="font-size:0.7em;color:#888;font-weight:normal"></span></h2>
+                        <div class="collection-filters">
+                            <button class="filter-btn active" data-quality="all">全部</button>
+                            <button class="filter-btn legendary" data-quality="4">传说</button>
+                            <button class="filter-btn epic" data-quality="3">史诗</button>
+                            <button class="filter-btn rare" data-quality="2">稀有</button>
+                        </div>
+                    </div>
+                    <div id="weapon-grid" class="collection-grid">
+                        <!-- JS Generated -->
+                    </div>
+
+                    <div class="collection-header" style="margin-top:2rem;">
+                        <h2 class="section-title">塔防图鉴 <span id="trap-count"
+                                style="font-size:0.7em;color:#888;font-weight:normal"></span></h2>
+                    </div>
+                    <div id="trap-grid" class="collection-grid">
+                        <!-- JS Generated -->
+                    </div>
+
+                    <div class="collection-header" style="margin-top:2rem;">
+                        <h2 class="section-title">插件图鉴 <span id="plugin-count"
+                                style="font-size:0.7em;color:#888;font-weight:normal"></span></h2>
+                        <div class="collection-filters">
+                            <button class="filter-btn active" data-slot="all">全部</button>
+                            <button class="filter-btn" data-slot="1">一号</button>
+                            <button class="filter-btn" data-slot="2">二号</button>
+                            <button class="filter-btn" data-slot="3">三号</button>
+                            <button class="filter-btn" data-slot="4">四号</button>
+                        </div>
+                    </div>
+                    <div id="plugin-grid" class="collection-grid">
+                        <!-- JS Generated -->
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    <script src="app.js?v=3"></script>
+
+    <!-- GitHub Link -->
+    <a href="https://github.com/HaMan412/NZM" target="_blank" class="github-fab" title="查看源码">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" alt="GitHub">
+        <span>开源仓库</span>
+    </a>
+</body>
+
+</html>
